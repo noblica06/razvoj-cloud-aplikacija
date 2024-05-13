@@ -9,9 +9,10 @@ using System.Web.Http;
 namespace RedditService
 {
    
-    class TestController : ApiController
+    public class TestController : ApiController
     {
         [HttpGet]
+        [Route("test/get")]
         public IHttpActionResult Get()
         {
             //return new HttpResponseMessage()
@@ -21,13 +22,6 @@ namespace RedditService
             return Ok("Hello from OWIN");
         }
 
-        public HttpResponseMessage Get(int id)
-        {
-            string msg = String.Format("Hello from OWIN (id = {0})", id);
-            return new HttpResponseMessage()
-            {
-                Content = new StringContent(msg)
-            };
-        }
+        
     }
 }
