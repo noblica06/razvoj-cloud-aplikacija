@@ -8,6 +8,7 @@
   <WorkerRole name="RedditService" vmsize="Standard_D1_v2">
     <ConfigurationSettings>
       <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" />
+      <Setting name="DataConnectionString" />
     </ConfigurationSettings>
     <Endpoints>
       <InputEndpoint name="TestEndpoint" protocol="http" port="10100" localPort="10101" />

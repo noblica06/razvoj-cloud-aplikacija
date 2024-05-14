@@ -112,7 +112,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\AuthController.cs" />
+    <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repository\UserDataRepository.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="TestController.cs" />
     <Compile Include="WorkerRole.cs" />
