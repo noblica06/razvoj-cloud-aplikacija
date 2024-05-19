@@ -54,6 +54,14 @@
       <RoleName>HealthStatusService</RoleName>
       <UpdateDiagnosticsConnectionStringOnPublish>True</UpdateDiagnosticsConnectionStringOnPublish>
     </ProjectReference>
+    <ProjectReference Include="..\ImageConverter\ImageConverter.csproj">
+      <Name>ImageConverter</Name>
+      <Project>{4863700f-6705-486b-ade9-c990ba8fccac}</Project>
+      <Private>True</Private>
+      <RoleType>Worker</RoleType>
+      <RoleName>ImageConverter</RoleName>
+      <UpdateDiagnosticsConnectionStringOnPublish>True</UpdateDiagnosticsConnectionStringOnPublish>
+    </ProjectReference>
     <ProjectReference Include="..\NotificationService\NotificationService.csproj">
       <Name>NotificationService</Name>
       <Project>{baa2128e-7f98-4107-bf05-b6ea1c3a1bcf}</Project>
@@ -74,12 +82,14 @@
   <ItemGroup>
     <Folder Include="HealthMonitoringServiceContent\" />
     <Folder Include="HealthStatusServiceContent\" />
+    <Folder Include="ImageConverterContent" />
     <Folder Include="NotificationServiceContent\" />
     <Folder Include="RedditServiceContent\" />
   </ItemGroup>
   <ItemGroup>
     <DiagnosticsConfiguration Include="HealthMonitoringServiceContent\diagnostics.wadcfgx" />
     <DiagnosticsConfiguration Include="HealthStatusServiceContent\diagnostics.wadcfgx" />
+    <DiagnosticsConfiguration Include="ImageConverterContent\diagnostics.wadcfgx" />
     <DiagnosticsConfiguration Include="NotificationServiceContent\diagnostics.wadcfgx" />
     <DiagnosticsConfiguration Include="RedditServiceContent\diagnostics.wadcfgx" />
   </ItemGroup>

@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HealthStatusService", "Heal
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HealthMonitoringService", "HealthMonitoringService\HealthMonitoringService.csproj", "{18A03D56-BA14-4B70-9325-96D1AA21D124}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageConverter", "ImageConverter\ImageConverter.csproj", "{4863700F-6705-486B-ADE9-C990BA8FCCAC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{18A03D56-BA14-4B70-9325-96D1AA21D124}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{18A03D56-BA14-4B70-9325-96D1AA21D124}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{18A03D56-BA14-4B70-9325-96D1AA21D124}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4863700F-6705-486B-ADE9-C990BA8FCCAC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4863700F-6705-486B-ADE9-C990BA8FCCAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4863700F-6705-486B-ADE9-C990BA8FCCAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4863700F-6705-486B-ADE9-C990BA8FCCAC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
