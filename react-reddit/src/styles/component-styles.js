@@ -13,3 +13,12 @@ export const typographyStyle = {
     color: colors["cream"],
   },
 };
+
+export const textFieldStyle = {
+  root: {
+    input: {
+      color: colors["cream"],
+      placeholder : colors["space-cadet"]
+    }
+  }
+};

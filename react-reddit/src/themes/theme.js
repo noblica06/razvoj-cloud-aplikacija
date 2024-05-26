@@ -1,6 +1,6 @@
 import { colors } from "./colors";
 import { createTheme } from "@mui/material/styles";
-import { buttonStyle, typographyStyle } from "../styles/component-styles";
+import { buttonStyle, textFieldStyle, typographyStyle } from "../styles/component-styles";
 
 const theme = createTheme({
   palette: {
@@ -22,6 +22,9 @@ const theme = createTheme({
     MuiTypography: {
       styleOverrides: typographyStyle,
     },
+    MuiTextField: {
+      styleOverrides: textFieldStyle,
+    }
   },
 });
 
