@@ -14,11 +14,14 @@ export const typographyStyle = {
   },
 };
 
+// & .MuiOutlinedInput-root": {color: "white"}, "& .MuiOutlinedInput-notchedOutline": {color: "white", borderColor: "white", borderWidth: "2px"
+
 export const textFieldStyle = {
   root: {
     input: {
       color: colors["cream"],
-      placeholder : colors["space-cadet"]
+      // placeholder : colors["cream"],
+      borderColor: colors["cream"]
     }
   }
 };

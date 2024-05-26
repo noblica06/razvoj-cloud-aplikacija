@@ -5,7 +5,7 @@ export default function SignupForm() {
     <Container component="main" maxWidth="xs">
     <Box
       sx={{
-        marginTop: 8,
+        // marginTop: 8,
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -18,6 +18,7 @@ export default function SignupForm() {
         <Grid container spacing={2}>
           <Grid item xs={12} sm={6}>
             <TextField
+             sx={{"& .MuiOutlinedInput-root": {color: colors["lavender"]}, "& .MuiOutlinedInput-notchedOutline": {color: colors["lavender"], borderColor: colors["lavender"], borderWidth: "2px"}, "& .MuiInputLabel-outlined": {color: colors["lavender"]}}}
               autoComplete="given-name"
               name="firstName"
               required
@@ -29,6 +30,7 @@ export default function SignupForm() {
           </Grid>
           <Grid item xs={12} sm={6}>
             <TextField
+            sx={{"& .MuiOutlinedInput-root": {color: colors["lavender"]}, "& .MuiOutlinedInput-notchedOutline": {color: colors["lavender"], borderColor: colors["lavender"], borderWidth: "2px"}, "& .MuiInputLabel-outlined": {color: colors["lavender"]}}}
               required
               fullWidth
               id="lastName"
@@ -39,6 +41,7 @@ export default function SignupForm() {
           </Grid>
           <Grid item xs={12}>
             <TextField
+            sx={{"& .MuiOutlinedInput-root": {color: colors["lavender"]}, "& .MuiOutlinedInput-notchedOutline": {color: colors["lavender"], borderColor: colors["lavender"], borderWidth: "2px"}, "& .MuiInputLabel-outlined": {color: colors["lavender"]}}}
               required
               fullWidth
               id="email"
@@ -49,6 +52,7 @@ export default function SignupForm() {
           </Grid>
           <Grid item xs={12}>
             <TextField
+            sx={{"& .MuiOutlinedInput-root": {color: colors["lavender"]}, "& .MuiOutlinedInput-notchedOutline": {color: colors["lavender"], borderColor: colors["lavender"], borderWidth: "2px"}, "& .MuiInputLabel-outlined": {color: colors["lavender"]}}}
               required
               fullWidth
               name="password"
@@ -61,6 +65,7 @@ export default function SignupForm() {
           <Grid item xs={12}>
             <TextField
               required
+              sx={{"& .MuiOutlinedInput-root": {color: colors["lavender"]}, "& .MuiOutlinedInput-notchedOutline": {color: colors["lavender"], borderColor: colors["lavender"], borderWidth: "2px"}, "& .MuiInputLabel-outlined": {color: colors["lavender"]}}}
               fullWidth
               id="adress"
               label="Address"
@@ -70,6 +75,7 @@ export default function SignupForm() {
           </Grid>
           <Grid item xs={12}>
             <TextField
+            sx={{"& .MuiOutlinedInput-root": {color: colors["lavender"]}, "& .MuiOutlinedInput-notchedOutline": {color: colors["lavender"], borderColor: colors["lavender"], borderWidth: "2px"}, "& .MuiInputLabel-outlined": {color: colors["lavender"]}}}
               required
               fullWidth
               id="city"
@@ -81,6 +87,7 @@ export default function SignupForm() {
           <Grid item xs={12}>
             <TextField
               required
+              sx={{"& .MuiOutlinedInput-root": {color: colors["lavender"]}, "& .MuiOutlinedInput-notchedOutline": {color: colors["lavender"], borderColor: colors["lavender"], borderWidth: "2px"}, "& .MuiInputLabel-outlined": {color: colors["lavender"]}}}
               fullWidth
               id="country"
               label="Country"
@@ -91,6 +98,7 @@ export default function SignupForm() {
           <Grid item xs={12}>
             <TextField
               required
+              sx={{"& .MuiOutlinedInput-root": {color: colors["lavender"]}, "& .MuiOutlinedInput-notchedOutline": {color: colors["lavender"], borderColor: colors["lavender"], borderWidth: "2px"}, "& .MuiInputLabel-outlined": {color: colors["lavender"]}}}
               fullWidth
               id="phoneNumber"
               label="Phone Number"

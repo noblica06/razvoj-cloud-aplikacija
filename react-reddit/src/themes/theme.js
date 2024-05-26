@@ -24,6 +24,9 @@ const theme = createTheme({
     },
     MuiTextField: {
       styleOverrides: textFieldStyle,
+    },
+    MuiOutlinedInput:{
+      styleOverrides: textFieldStyle,
     }
   },
 });

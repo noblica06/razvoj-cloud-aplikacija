@@ -28,9 +28,9 @@ namespace RedditService.Controllers
                 CloudBlobClient blobStorage = storageAccount.CreateCloudBlobClient();
                 CloudBlobContainer container = blobStorage.GetContainerReference("vezba");
                 CloudBlockBlob blob = container.GetBlockBlobReference(uniqueBlobName);
-                blob.Properties.ContentType = userDTO.File.ContentType;
+                //blob.Properties.ContentType = userDTO.File.ContentType;
                 // postavljanje odabrane datoteke (slike) u blob servis koristeci blob klijent
-                blob.UploadFromStream(userDTO.File.InputStream);
+                //blob.UploadFromStream(userDTO.File.InputStream);
                 // upis studenta u table storage koristeci StudentDataRepository klasu
 
 
