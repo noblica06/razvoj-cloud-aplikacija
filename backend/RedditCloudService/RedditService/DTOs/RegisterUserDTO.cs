@@ -18,6 +18,6 @@ namespace RedditService.DTOs
         public string PhoneNumber { get; set; }
         public string Email { get; set; }
         public string PhotoUrl { get; set; }
-        public HttpPostedFileBase File { get; set; }
+        //public HttpPostedFileBase File { get; set; }
     }
 }

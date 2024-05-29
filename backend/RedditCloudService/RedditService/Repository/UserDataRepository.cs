@@ -18,7 +18,8 @@ namespace RedditService.Repository
         {
             _storageAccount = CloudStorageAccount.Parse(CloudConfigurationManager.GetSetting("DataConnectionString"));
             CloudTableClient tableClient = new CloudTableClient(new Uri(_storageAccount.TableEndpoint.AbsoluteUri), _storageAccount.Credentials);
-            _table = tableClient.GetTableReference("UserTable"); _table.CreateIfNotExists();
+            _table = tableClient.GetTableReference("UserTable");
+            //_table.CreateIfNotExists();
         }
         public IQueryable<User> RetrieveAllUsers()
         {
@@ -51,7 +52,15 @@ namespace RedditService.Repository
 
         public User GetUser(string email)
         {
-            return RetrieveAllUsers().Where(p => p.RowKey == email).FirstOrDefault();
+            try
+            {
+                return RetrieveAllUsers().Where(p => p.RowKey == email).FirstOrDefault();
+            }
+            catch(Exception e)
+            {
+                return null;
+            }
+            
         }
 
         public void UpdateUser(User user)
