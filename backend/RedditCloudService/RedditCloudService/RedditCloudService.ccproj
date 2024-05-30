@@ -78,6 +78,14 @@
       <RoleName>RedditService</RoleName>
       <UpdateDiagnosticsConnectionStringOnPublish>True</UpdateDiagnosticsConnectionStringOnPublish>
     </ProjectReference>
+    <ProjectReference Include="..\RSMVC\RSMVC.csproj">
+      <Name>RSMVC</Name>
+      <Project>{fdefb38d-d2a6-4456-9702-478b836af459}</Project>
+      <Private>True</Private>
+      <RoleType>Web</RoleType>
+      <RoleName>RSMVC</RoleName>
+      <UpdateDiagnosticsConnectionStringOnPublish>True</UpdateDiagnosticsConnectionStringOnPublish>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="HealthMonitoringServiceContent\" />
@@ -85,6 +93,7 @@
     <Folder Include="ImageConverterContent" />
     <Folder Include="NotificationServiceContent\" />
     <Folder Include="RedditServiceContent\" />
+    <Folder Include="RSMVCContent\" />
   </ItemGroup>
   <ItemGroup>
     <DiagnosticsConfiguration Include="HealthMonitoringServiceContent\diagnostics.wadcfgx" />
@@ -92,6 +101,7 @@
     <DiagnosticsConfiguration Include="ImageConverterContent\diagnostics.wadcfgx" />
     <DiagnosticsConfiguration Include="NotificationServiceContent\diagnostics.wadcfgx" />
     <DiagnosticsConfiguration Include="RedditServiceContent\diagnostics.wadcfgx" />
+    <DiagnosticsConfiguration Include="RSMVCContent\diagnostics.wadcfgx" />
   </ItemGroup>
   <!-- Import the target files for this project template -->
   <PropertyGroup>
