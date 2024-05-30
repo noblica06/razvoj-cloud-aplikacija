@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageConverter", "ImageConv
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RSMVC", "RSMVC\RSMVC.csproj", "{FDEFB38D-D2A6-4456-9702-478B836AF459}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RedditService_Data", "RedditSrvice_Data\RedditService_Data.csproj", "{EB1C3BFF-E250-4D78-9C30-EBC542DC0BB8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
 		{FDEFB38D-D2A6-4456-9702-478B836AF459}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FDEFB38D-D2A6-4456-9702-478B836AF459}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FDEFB38D-D2A6-4456-9702-478B836AF459}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EB1C3BFF-E250-4D78-9C30-EBC542DC0BB8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB1C3BFF-E250-4D78-9C30-EBC542DC0BB8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EB1C3BFF-E250-4D78-9C30-EBC542DC0BB8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EB1C3BFF-E250-4D78-9C30-EBC542DC0BB8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -94,6 +94,7 @@
     <Folder Include="NotificationServiceContent\" />
     <Folder Include="RedditServiceContent\" />
     <Folder Include="RSMVCContent\" />
+    <Folder Include="RS_DataContent\" />
   </ItemGroup>
   <ItemGroup>
     <DiagnosticsConfiguration Include="HealthMonitoringServiceContent\diagnostics.wadcfgx" />
@@ -102,6 +103,7 @@
     <DiagnosticsConfiguration Include="NotificationServiceContent\diagnostics.wadcfgx" />
     <DiagnosticsConfiguration Include="RedditServiceContent\diagnostics.wadcfgx" />
     <DiagnosticsConfiguration Include="RSMVCContent\diagnostics.wadcfgx" />
+    <DiagnosticsConfiguration Include="RS_DataContent\diagnostics.wadcfgx" />
   </ItemGroup>
   <!-- Import the target files for this project template -->
   <PropertyGroup>
