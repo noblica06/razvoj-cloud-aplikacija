@@ -1,4 +1,6 @@
-﻿@{
+﻿@model IEnumerable<RSMVC.Models.Theme>
+@using Microsoft.AspNet.Identity
+@{
     ViewBag.Title = "Home Page";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -6,38 +8,25 @@
 <div class="row">
     <div style="float: right" class="col-12 d-flex justify-content-between align-items-center mb-3">
         <h1 class="h3">Themes</h1>
-        <a class="btn btn-primary" href="@Url.Action("CreateTheme", "Theme")">Create New Theme</a>
+        <!--<a class="btn btn-primary" href="@Url.Action("CreateTheme", "Home")">Create New Theme</a> -->
+        @Html.ActionLink("Create New Theme", "AddTheme", "Home", null, new { @class = "btn btn-primary" })
+
     </div>
 </div>
 
 <div class="container">
     <div class="row row-cols-1 row-cols-md-3 g-4">
-        @foreach (var theme in ViewBag.Themes)
+        @foreach (var theme in Model)
         {
-
-            <div class="col-lg-4">
-                <div class="card card-margin">
-                    <div class="card-header">
-                        <h5 class="card-title">@theme.Title</h5>
-                    </div>
-                    <div class="card-body pt-0">
-                        <div class="widget-49">
-                            <div class="widget-49-title-wrapper">
-                                <div class="widget-49-date-primary">
-                                    <span class="widget-49-date-day">@theme.CreatedDate.Day</span>
-                                    <span class="widget-49-date-month">@theme.Title</span>
-                                </div>
-                            </div>
-                            <ol class="widget-49-meeting-points">
-                                <li class="widget-49-meeting-item"><span>@theme.Description</span></li>
-                            </ol>
-                            <div class="widget-49-meeting-action">
-                                <a href="#" class="btn btn-sm btn-flash-border-primary">View All</a>
-                            </div>
-                        </div>
-                    </div>
+            <div class="card" style="width: 18rem;">
+                <img src=@theme.ThumbnailUrl class="card-img-top" alt=@theme.RowKey>
+                <div class="card-body">
+                    <h5 class="card-title">@theme.RowKey</h5>
+                    <p class="card-text">@theme.Description</p>
+                    @Html.ActionLink("Details", "Details", "Home", new { title = theme.RowKey }, new { @class = "btn btn-primary" })
                 </div>
             </div>
-         }
+        }
     </div>
 </div>
+

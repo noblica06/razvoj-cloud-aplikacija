@@ -1,4 +1,5 @@
-﻿using System.Data.Entity;
+﻿using System.Collections.Generic;
+using System.Data.Entity;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
@@ -14,6 +15,7 @@ namespace RSMVC.Models
         public string Address { get; set; }
         public string City { get; set; }
         public string Country { get; set; }
+        public List<string> ThemeGuids { get; set; } = new List<string>();
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {

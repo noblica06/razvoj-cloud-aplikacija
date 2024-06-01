@@ -1,0 +1,62 @@
+﻿@model RSMVC.Models.ThemeAndComments
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+</head>
+<body>
+    <div>
+        <div class="card mb-3">
+            <div class="row g-0">
+                <div class="col-md-4" style="width: 300px">
+                    <img src=@Model.Theme.ThumbnailUrl class="img-fluid rounded-start" alt=@Model.Theme.RowKey>
+                </div>
+                <div style="min-width: 600px" class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title">@Model.Theme.RowKey</h5>
+                        <p class="card-text">@Model.Theme.Description</p>
+                        <p class="card-text"><small class="text-body-secondary">@Model.Theme.CreatedDate</small></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @if (Model.Comments.Count > 0 && Model.Comments != null)
+        {
+            foreach (var comment in Model.Comments)
+            {
+                <div class="card mb-3">
+                    <div class="row g-0">
+                        <div class="col-md-4" style="width: 300px">
+                            <img src="" class="img-fluid rounded-start" alt="Slika korisnika">
+                        </div>
+                        <div style="min-width: 600px" class="col-md-8">
+                            <div class="card-body">
+                                <h5 class="card-title">@comment.UserEmail</h5>
+                                <p class="card-text">@comment.Content</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        else
+        { <h1>There is no comments yet!</h1>}
+
+        <div id="commentForm" class="hidden mt-3">
+            <form method="post" action="@Url.Action("AddComment", "Home")">
+                <div class="form-group">
+                    <label for="commentText">New Comment</label>
+                    <textarea id="content" name="content" class="form-control" rows="3"></textarea>
+                </div>
+                <input type="hidden" name="themeTitle" value="@Model.Theme.RowKey" />
+                <input type="hidden" id="userEmail" name="userEmail" value="@User.Identity.Name" />
+                <button type="submit" class="btn btn-success mt-2">Submit Comment</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
