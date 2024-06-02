@@ -16,9 +16,120 @@
                 </div>
                 <div style="min-width: 600px" class="col-md-8">
                     <div class="card-body">
+                        @if (User.Identity.Name == Model.Theme.UserEmail)
+                        {
+                        <div id="removeThemeForm" style="float: right">
+                            <form method="post" action="@Url.Action("RemoveTheme", "Home")">
+                                <input type="hidden" name="themeTitle" value="@Model.Theme.RowKey" />
+                                <input type="hidden" id="userEmail" name="userEmail" value="@User.Identity.Name" />
+                                <button type="submit" title="Remove theme" style=" border: none; background-color:white">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="red" class="bi bi-trash" viewBox="0 0 16 16">
+                                        <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
+                                        <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
+                                    </svg>
+                                </button>
+                            </form>
+                        </div>
+                        }
                         <h5 class="card-title">@Model.Theme.RowKey</h5>
                         <p class="card-text">@Model.Theme.Description</p>
+                        <p class="card-text">Popularity: @Model.Theme.UpVotes - @Model.Theme.DownVotes</p>
                         <p class="card-text"><small class="text-body-secondary">@Model.Theme.CreatedDate</small></p>
+                        <!--Upvote buttons-->
+                        @if (User.Identity.Name != "" && User.Identity.Name != null)
+                        {
+                            <div class="card-text">
+
+                                @if (Model.Upvoters.Contains(User.Identity.Name))
+                                {
+                                    <div id="removeUpvoteForm" style="float: right">
+                                        <form method="post" action="@Url.Action("RemoveUpvote", "Home")">
+                                            <input type="hidden" name="themeTitle" value="@Model.Theme.RowKey" />
+                                            <input type="hidden" id="userEmail" name="userEmail" value="@User.Identity.Name" />
+                                            <button type="submit" title="Remove upvote" style=" border: none; background-color:white">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="green" class="bi bi-arrow-up-circle-fill" viewBox="0 0 16 16">
+                                                    <path d="M16 8A8 8 0 1 0 0 8a8 8 0 0 0 16 0m-7.5 3.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707z" />
+                                                </svg>
+                                            </button>
+                                        </form>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div id="upvoteForm" style="float: right">
+
+                                        <form method="post" action="@Url.Action("AddUpvote", "Home")">
+                                            <input type="hidden" name="themeTitle" value="@Model.Theme.RowKey" />
+                                            <input type="hidden" id="userEmail" name="userEmail" value="@User.Identity.Name" />
+                                            <button type="submit" title="Upvote" style="border: none; background-color:white">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="green" class="bi bi-arrow-up-circle" viewBox="0 0 16 16">
+                                                    <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-7.5 3.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707z" />
+                                                </svg>
+                                            </button>
+                                        </form>
+                                    </div>
+                                }
+
+                                @if (Model.Downvoters.Contains(User.Identity.Name))
+                                {
+                                    <div id="removeDownvoteForm" style="float: right">
+                                        <form method="post" action="@Url.Action("RemoveDownvote", "Home")">
+                                            <input type="hidden" name="themeTitle" value="@Model.Theme.RowKey" />
+                                            <input type="hidden" id="userEmail" name="userEmail" value="@User.Identity.Name" />
+                                            <button type="submit" title="Remove downvote" style="border: none; background-color:white">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="red" class="bi bi-arrow-down-circle-fill" viewBox="0 0 16 16">
+                                                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v5.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293z" />
+                                                </svg>
+                                            </button>
+                                        </form>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div id="downvoteForm" style="float: right">
+                                        <form method="post" action="@Url.Action("AddDownvote", "Home")">
+                                            <input type="hidden" name="themeTitle" value="@Model.Theme.RowKey" />
+                                            <input type="hidden" id="userEmail" name="userEmail" value="@User.Identity.Name" />
+                                            <button type="submit" title="Downvote" style="border: none; background-color:white">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="red" class="bi bi-arrow-down-circle" viewBox="0 0 16 16">
+                                                    <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v5.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293z" />
+                                                </svg>
+                                            </button>
+                                        </form>
+                                    </div>
+                                }
+
+                                <!--Subscribe buttons-->
+                                @if (Model.Subscribers.Contains(User.Identity.Name))
+                                {
+                                    <div id="removeSubscriptionForm" style="float: right">
+                                        <form method="post" action="@Url.Action("RemoveSubscription", "Home")">
+                                            <input type="hidden" name="themeTitle" value="@Model.Theme.RowKey" />
+                                            <input type="hidden" id="userEmail" name="userEmail" value="@User.Identity.Name" />
+                                            <button type="submit" title="Unsubscribe" style=" border: none; background-color:white">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="blue" class="bi bi-bell-slash-fill" viewBox="0 0 16 16">
+                                                    <path d="M5.164 14H15c-1.5-1-2-5.902-2-7q0-.396-.06-.776zm6.288-10.617A5 5 0 0 0 8.995 2.1a1 1 0 1 0-1.99 0A5 5 0 0 0 3 7c0 .898-.335 4.342-1.278 6.113zM10 15a2 2 0 1 1-4 0zm-9.375.625a.53.53 0 0 0 .75.75l14.75-14.75a.53.53 0 0 0-.75-.75z" />
+                                                </svg>
+                                            </button>
+                                        </form>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div id="subscribeForm" style="float: right">
+                                        <form method="post" action="@Url.Action("AddSubscription", "Home")">
+                                            <input type="hidden" name="themeTitle" value="@Model.Theme.RowKey" />
+                                            <input type="hidden" id="userEmail" name="userEmail" value="@User.Identity.Name" />
+                                            <button type="submit" title="Subscribe" style="border: none; background-color:white">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="blue" class="bi bi-bell-fill" viewBox="0 0 16 16">
+                                                    <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2m.995-14.901a1 1 0 1 0-1.99 0A5 5 0 0 0 3 6c0 1.098-.5 6-2 7h14c-1.5-1-2-5.902-2-7 0-2.42-1.72-4.44-4.005-4.901" />
+                                                </svg>
+                                            </button>
+                                        </form>
+                                    </div>
+                                }
+                            </div>
+                        }
                     </div>
                 </div>
             </div>
@@ -35,28 +146,48 @@
                         </div>
                         <div style="min-width: 600px" class="col-md-8">
                             <div class="card-body">
+
+                                <!--Delete Comment Button-->
+                                @if(User.Identity.Name != "" && User.Identity.Name != null && User.Identity.Name == comment.UserEmail) { 
+                                <div id="removeThemeForm" style="float: right">
+                                    <form method="post" action="@Url.Action("RemoveComment", "Home")">
+                                        <input type="hidden" name="commentGuid" value="@comment.RowKey" />
+                                        <input type="hidden" id="userEmail" name="userEmail" value="@User.Identity.Name" />
+                                        <button type="submit" title="Remove comment" style=" border: none; background-color:white">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="red" class="bi bi-trash" viewBox="0 0 16 16">
+                                                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
+                                                <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
+                                            </svg>
+                                        </button>
+                                    </form>
+                                </div>
+                                }
                                 <h5 class="card-title">@comment.UserEmail</h5>
                                 <p class="card-text">@comment.Content</p>
                             </div>
                         </div>
                     </div>
                 </div>
+                
             }
         }
         else
-        { <h1>There is no comments yet!</h1>}
+        { <h5>There is no comments yet!</h5>}
 
-        <div id="commentForm" class="hidden mt-3">
-            <form method="post" action="@Url.Action("AddComment", "Home")">
-                <div class="form-group">
-                    <label for="commentText">New Comment</label>
-                    <textarea id="content" name="content" class="form-control" rows="3"></textarea>
-                </div>
-                <input type="hidden" name="themeTitle" value="@Model.Theme.RowKey" />
-                <input type="hidden" id="userEmail" name="userEmail" value="@User.Identity.Name" />
-                <button type="submit" class="btn btn-success mt-2">Submit Comment</button>
-            </form>
-        </div>
+        @if (User.Identity.Name != "" && User.Identity.Name != null)
+        {
+            <div id="commentForm" class="hidden mt-3">
+                <form method="post" action="@Url.Action("AddComment", "Home")">
+                    <div class="form-group">
+                        <label for="commentText">New Comment</label>
+                        <textarea id="content" name="content" class="form-control" rows="3"></textarea>
+                    </div>
+                    <input type="hidden" name="themeTitle" value="@Model.Theme.RowKey" />
+                    <input type="hidden" id="userEmail" name="userEmail" value="@User.Identity.Name" />
+                    <button type="submit" class="btn btn-success mt-2">Submit Comment</button>
+                </form>
+            </div>
+        }
     </div>
 </body>
 </html>

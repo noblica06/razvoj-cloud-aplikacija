@@ -177,6 +177,8 @@
     <Compile Include="DataRepo\CommentDataRepo.cs" />
     <Compile Include="DataRepo\QueueHelper.cs" />
     <Compile Include="DataRepo\ThemeDataRepository.cs" />
+    <Compile Include="DataRepo\ThemeSubscribersDataRepo.cs" />
+    <Compile Include="DataRepo\ThemeVotersDataRepo.cs" />
     <Compile Include="DataRepo\UserDataRepo.cs" />
     <Compile Include="DTOs\LoginResponseDTO.cs" />
     <Compile Include="DTOs\LoginUserDTO.cs" />

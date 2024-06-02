@@ -17,4 +17,5 @@ namespace RSMVC.Models
         public string Description { get; set; }
         public HttpPostedFileBase File { get; set; }
     }
+
 }
