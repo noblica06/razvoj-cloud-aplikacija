@@ -1,6 +1,10 @@
 ﻿using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
+using Microsoft.WindowsAzure;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Blob;
+using RSMVC.DataRepo;
 using RSMVC.DTOs;
 using RSMVC.Models;
 using System;
@@ -16,6 +20,7 @@ namespace RSMVC.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+        UserDataRepo userDataRepo = new UserDataRepo();
 
         public AccountController()
         {
@@ -123,10 +128,27 @@ namespace RSMVC.Controllers
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser { UserName = model.Email, Email = model.Email, PhoneNumber = model.PhoneNumber, FirstName = model.FirstName, LastName = model.LastName, Address = model.Address, City = model.City, Country = model.Country };
+
+                var tableUser = new UserData(model.Email) { Address = model.Address, City = model.City, Country = model.Country, FirstName = model.FirstName, LastName = model.LastName, PhoneNumber = model.PhoneNumber };
+                
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                    string uniqueBName = model.Email.Split('@')[0];
+
+                    string uniqueBlobName = string.Format("image_{0}", uniqueBName);
+                    var storageAccount = CloudStorageAccount.Parse(CloudConfigurationManager.GetSetting("DataConnectionString"));
+                    CloudBlobClient blobStorage = storageAccount.CreateCloudBlobClient();
+                    CloudBlobContainer container = blobStorage.GetContainerReference("vezba");
+                    CloudBlockBlob blob = container.GetBlockBlobReference(uniqueBlobName);
+                    blob.Properties.ContentType = model.File.ContentType;
+                    // postavljanje odabrane datoteke (slike) u blob servis koristeci blob klijent
+                    blob.UploadFromStream(model.File.InputStream);
+                    tableUser.PhotoUrl = blob.Uri.ToString();
+                    tableUser.ThumbnailUrl = blob.Uri.ToString();
+
+                    userDataRepo.AddUserData(tableUser);
 
                     return RedirectToAction("Index", "Home");
                 }

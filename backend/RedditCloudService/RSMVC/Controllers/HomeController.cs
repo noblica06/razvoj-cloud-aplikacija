@@ -16,6 +16,7 @@ namespace RSMVC.Controllers
     {
         ThemeDataRepository repo = new ThemeDataRepository();
         CommentDataRepo repoComment = new CommentDataRepo();
+        UserDataRepo repoUser = new UserDataRepo();
 
         public ActionResult Index()
         {
@@ -99,7 +100,7 @@ namespace RSMVC.Controllers
        {
             string guid = Guid.NewGuid().ToString();
             Comment comment = new Comment(guid) { Content = content, ThemeTitle = themeTitle, UserEmail = userEmail };
-
+            comment.UserImage = repoUser.GetUserData(userEmail).ThumbnailUrl;
 
             repoComment.AddComment(comment);
 
