@@ -21,7 +21,7 @@ namespace RSMVC.Controllers
         ThemeVotersDataRepo repoThemeVoters = new ThemeVotersDataRepo();
         ThemeSubscribersDataRepo repoThemeSubscribers = new ThemeSubscribersDataRepo();
 
-        public ActionResult Index(List<Theme> listOfThemes = null)
+        public ActionResult Index(List<Theme> listOfThemes = null, int page = 0)
         {
             List<Theme> themes = null;
             if (listOfThemes == null)
@@ -45,10 +45,21 @@ namespace RSMVC.Controllers
                             .ToList();
                 }
             }
-            return View(themes);
+
+            const int PageSize = 3; 
+
+            var count = themes.Count();
+
+            var data = themes.Skip(page * PageSize).Take(PageSize).ToList();
+
+            this.ViewBag.MaxPage = (count / PageSize) - (count % PageSize == 0 ? 1 : 0);
+
+            this.ViewBag.Page = page;
+
+            return View(data);
         }
 
-        public ActionResult Order(string order)
+        public ActionResult Order(string order, int page=0)
         {
             List<Theme> themeList = repo.RetrieveAllThemes().ToList();
             if (order == "ascending")
@@ -70,10 +81,20 @@ namespace RSMVC.Controllers
                         .ToList();
             }
 
-            return View("Index", themeList);
+            const int PageSize = 3;
+
+            var count = themeList.Count();
+
+            var data = themeList.Skip(page * PageSize).Take(PageSize).ToList();
+
+            this.ViewBag.MaxPage = (count / PageSize) - (count % PageSize == 0 ? 1 : 0);
+
+            this.ViewBag.Page = page;
+
+            return View("Index", data);
         }
 
-        public ActionResult Search(string searchTerm)
+        public ActionResult Search(string searchTerm, int page=0)
         {
             List<Theme> themeList = new List<Theme>();
             if(searchTerm != "")
@@ -93,7 +114,18 @@ namespace RSMVC.Controllers
                         .Select(v => v.UserEmail)
                         .ToList();
             }
-            return View("Index", themeList);
+
+            const int PageSize = 3;
+
+            var count = themeList.Count();
+
+            var data = themeList.Skip(page * PageSize).Take(PageSize).ToList();
+
+            this.ViewBag.MaxPage = (count / PageSize) - (count % PageSize == 0 ? 1 : 0);
+
+            this.ViewBag.Page = page;
+
+            return View("Index", data);
         }
 
         public ActionResult About()
@@ -114,7 +146,7 @@ namespace RSMVC.Controllers
         {
             return View();
         }
-
+        [Authorize]
         public ActionResult CreateTheme(CreateThemeViewModel newTheme)
         {
             try
@@ -150,6 +182,7 @@ namespace RSMVC.Controllers
             }
         }
 
+        [Authorize]
         public ActionResult RemoveTheme(string themeTitle, string userEmail)
         {
             bool themeExists = repo.Exists(themeTitle);
@@ -187,6 +220,7 @@ namespace RSMVC.Controllers
             return RedirectToAction("Index");
         }
 
+        [Authorize]
         public ActionResult RemoveComment(string commentGuid, string userEmail)
         {
             bool commentExists = repoComment.Exists(commentGuid);
@@ -201,8 +235,12 @@ namespace RSMVC.Controllers
             return RedirectToAction("Details", new { title = themeTitle });
         }
 
-        public ActionResult Details(string title)
+        public ActionResult Details(string title="")
        {
+            if(title == "" || title == null)
+            {
+                RedirectToAction("Index");
+            }
             Theme theme = repo.GetTheme(title);
             List<Comment> comments = new List<Comment>();
             List<string> upvoters = new List<string>();
@@ -245,7 +283,8 @@ namespace RSMVC.Controllers
             return View(model);
        }
 
-       public ActionResult AddComment(string content, string themeTitle, string userEmail)
+        [Authorize]
+        public ActionResult AddComment(string content, string themeTitle, string userEmail)
        {
             string guid = Guid.NewGuid().ToString();
             Comment comment = new Comment(guid) { Content = content, ThemeTitle = themeTitle, UserEmail = userEmail };
@@ -260,6 +299,7 @@ namespace RSMVC.Controllers
         }
 
         //Upvotes 
+        [Authorize]
         public ActionResult AddUpvote(string themeTitle, string userEmail)
         {
             Theme theme = repo.GetTheme(themeTitle);
@@ -294,6 +334,7 @@ namespace RSMVC.Controllers
 
             return RedirectToAction("Details", new { title = themeTitle });
         }
+        [Authorize]
         public ActionResult RemoveUpvote(string themeTitle, string userEmail)
         {
             Theme theme = repo.GetTheme(themeTitle);
@@ -320,6 +361,7 @@ namespace RSMVC.Controllers
         }
 
         //Downvotes
+        [Authorize]
         public ActionResult AddDownvote(string themeTitle, string userEmail)
         {
             Theme theme = repo.GetTheme(themeTitle);
@@ -354,6 +396,7 @@ namespace RSMVC.Controllers
 
             return RedirectToAction("Details", new { title = themeTitle });
         }
+        [Authorize]
         public ActionResult RemoveDownvote(string themeTitle, string userEmail)
         {
             Theme theme = repo.GetTheme(themeTitle);
@@ -380,6 +423,7 @@ namespace RSMVC.Controllers
         }
 
         //Subscribes
+        [Authorize]
         public ActionResult AddSubscription(string themeTitle, string userEmail)
         {
             Theme theme = repo.GetTheme(themeTitle);
@@ -402,6 +446,7 @@ namespace RSMVC.Controllers
 
             return RedirectToAction("Details", new { title = themeTitle });
         }
+        [Authorize]
         public ActionResult RemoveSubscription(string themeTitle, string userEmail)
         {
             Theme theme = repo.GetTheme(themeTitle);
