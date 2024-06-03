@@ -21,11 +21,46 @@ namespace RSMVC.Controllers
         ThemeVotersDataRepo repoThemeVoters = new ThemeVotersDataRepo();
         ThemeSubscribersDataRepo repoThemeSubscribers = new ThemeSubscribersDataRepo();
 
-        public ActionResult Index()
+        public ActionResult Index(List<Theme> listOfThemes = null)
         {
-            List<Theme> themes = repo.RetrieveAllThemes().ToList();
+            List<Theme> themes = null;
+            if (listOfThemes == null)
+            {
+                themes = repo.RetrieveAllThemes().ToList();
+            }
+            else
+            {
+                themes = listOfThemes;
+            }
 
-            foreach (Theme theme in themes)
+            if (themes != null)
+            {
+                foreach (Theme theme in themes)
+                {
+                    theme.Upvoters = repoThemeVoters.RetrieveAllThemeVoters().Where(v => v.Upvoted && v.ThemeTitle == theme.Title)
+                                .Select(v => v.UserEmail)
+                                .ToList();
+                    theme.Downvoters = repoThemeVoters.RetrieveAllThemeVoters().Where(v => v.Downvoted && v.ThemeTitle == theme.Title)
+                            .Select(v => v.UserEmail)
+                            .ToList();
+                }
+            }
+            return View(themes);
+        }
+
+        public ActionResult Order(string order)
+        {
+            List<Theme> themeList = repo.RetrieveAllThemes().ToList();
+            if (order == "ascending")
+            {
+                themeList = themeList.OrderBy(theme => theme.UpVotes).ThenByDescending(theme => theme.DownVotes).ToList();
+            }
+            else
+            {
+                themeList = themeList.OrderByDescending(theme => theme.UpVotes).ThenBy(theme => theme.DownVotes).ToList();
+            }
+
+            foreach (Theme theme in themeList)
             {
                 theme.Upvoters = repoThemeVoters.RetrieveAllThemeVoters().Where(v => v.Upvoted && v.ThemeTitle == theme.Title)
                             .Select(v => v.UserEmail)
@@ -35,8 +70,31 @@ namespace RSMVC.Controllers
                         .ToList();
             }
 
-            return View(themes);
-         }
+            return View("Index", themeList);
+        }
+
+        public ActionResult Search(string searchTerm)
+        {
+            List<Theme> themeList = new List<Theme>();
+            if(searchTerm != "")
+            {
+                themeList = repo.RetrieveAllThemes().ToList().Where(theme => theme.Title.ToLower().Contains(searchTerm.ToLower())).ToList();
+            }
+            else
+            {
+                themeList = repo.RetrieveAllThemes().ToList();
+            }
+            foreach (Theme theme in themeList)
+            {
+                theme.Upvoters = repoThemeVoters.RetrieveAllThemeVoters().Where(v => v.Upvoted && v.ThemeTitle == theme.Title)
+                            .Select(v => v.UserEmail)
+                            .ToList();
+                theme.Downvoters = repoThemeVoters.RetrieveAllThemeVoters().Where(v => v.Downvoted && v.ThemeTitle == theme.Title)
+                        .Select(v => v.UserEmail)
+                        .ToList();
+            }
+            return View("Index", themeList);
+        }
 
         public ActionResult About()
         {
@@ -67,8 +125,9 @@ namespace RSMVC.Controllers
                     return View("Error");
                 }
 
+                string themeTitle = newTheme.Title.Replace(' ', '_');
                 // kreiranje blob sadrzaja i kreiranje blob klijenta
-                string uniqueBlobName = string.Format("image_{0}", newTheme.Title);
+                string uniqueBlobName = string.Format("image_{0}", themeTitle);
                 var storageAccount = CloudStorageAccount.Parse(CloudConfigurationManager.GetSetting("DataConnectionString"));
                 CloudBlobClient blobStorage = storageAccount.CreateCloudBlobClient();
                 CloudBlobContainer container = blobStorage.GetContainerReference("vezba");
@@ -149,6 +208,7 @@ namespace RSMVC.Controllers
             List<string> upvoters = new List<string>();
             List<string> downvoters = new List<string>();
             List<string> subscribers = new List<string>();
+            string userThumbnailUrl = "";
 
             try {
                 comments = repoComment.RetrieveAllComments().Where(c => c.ThemeTitle == title).ToList();
@@ -161,6 +221,7 @@ namespace RSMVC.Controllers
                 subscribers = repoThemeSubscribers.RetrieveAllThemeSubscribers().Where(v => v.ThemeTitle == title)
                             .Select(v => v.UserEmail)
                             .ToList();
+                userThumbnailUrl = repoUser.GetUserData(theme.UserEmail).ThumbnailUrl;
             }
             catch(Exception e)
             {
@@ -173,8 +234,13 @@ namespace RSMVC.Controllers
                 Comments = comments,
                 Upvoters = upvoters,
                 Downvoters = downvoters,
-                Subscribers = subscribers
+                Subscribers = subscribers,
+                UserThumbnailUrl = userThumbnailUrl
             };
+            if(model.Theme == null)
+            {
+                RedirectToAction("Index");
+            }
 
             return View(model);
        }

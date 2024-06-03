@@ -12,29 +12,39 @@
         <div class="card mb-3">
             <div class="row g-0">
                 <div class="col-md-4" style="width: 300px">
-                    <img src=@Model.Theme.ThumbnailUrl class="img-fluid rounded-start" alt=@Model.Theme.RowKey>
+                    <img style="border-radius: 20px; margin:5px" src=@Model.UserThumbnailUrl class="img-fluid rounded-start" alt=@Model.Theme.UserEmail>
+                    <h6 style="margin-left: 5px">Email: @Model.Theme.UserEmail</h6>
                 </div>
                 <div style="min-width: 600px" class="col-md-8">
                     <div class="card-body">
                         @if (User.Identity.Name == Model.Theme.UserEmail)
                         {
-                        <div id="removeThemeForm" style="float: right">
-                            <form method="post" action="@Url.Action("RemoveTheme", "Home")">
-                                <input type="hidden" name="themeTitle" value="@Model.Theme.RowKey" />
-                                <input type="hidden" id="userEmail" name="userEmail" value="@User.Identity.Name" />
-                                <button type="submit" title="Remove theme" style=" border: none; background-color:white">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="red" class="bi bi-trash" viewBox="0 0 16 16">
-                                        <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
-                                        <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
-                                    </svg>
-                                </button>
-                            </form>
-                        </div>
+                            <div id="removeThemeForm" style="float: right">
+                                <form method="post" action="@Url.Action("RemoveTheme", "Home")">
+                                    <input type="hidden" name="themeTitle" value="@Model.Theme.RowKey" />
+                                    <input type="hidden" id="userEmail" name="userEmail" value="@User.Identity.Name" />
+                                    <button type="submit" title="Remove theme" style=" border: none; background-color:white">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="red" class="bi bi-trash" viewBox="0 0 16 16">
+                                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
+                                            <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
+                                        </svg>
+                                    </button>
+                                </form>
+                            </div>
                         }
-                        <h5 class="card-title">@Model.Theme.RowKey</h5>
-                        <p class="card-text">@Model.Theme.Description</p>
-                        <p class="card-text">Popularity: @Model.Theme.UpVotes - @Model.Theme.DownVotes</p>
-                        <p class="card-text"><small class="text-body-secondary">@Model.Theme.CreatedDate</small></p>
+                        <div class="card mb-3">
+                            <img style="max-width: 600px; max-height: 200px" src=@Model.Theme.ThumbnailUrl class="card-img-top" alt="@Model.Theme.RowKey" />
+                            <div class="card-body">
+                                <h5 class="card-title">@Model.Theme.RowKey</h5>
+                                <p class="card-text">@Model.Theme.Description</p>
+                                <p class="card-text">Popularity: @Model.Theme.UpVotes - @Model.Theme.DownVotes</p>
+                                <p class="card-text"><small class="text-body-secondary">@Model.Theme.CreatedDate</small></p>
+                            </div>
+                        </div>
+                        <!-- <h5 class="card-title">@Model.Theme.RowKey</h5>
+                         <p class="card-text">@Model.Theme.Description</p>
+                         <p class="card-text">Popularity: @Model.Theme.UpVotes - @Model.Theme.DownVotes</p>
+                         <p class="card-text"><small class="text-body-secondary">@Model.Theme.CreatedDate</small></p> -->
                         <!--Upvote buttons-->
                         @if (User.Identity.Name != "" && User.Identity.Name != null)
                         {
@@ -142,25 +152,27 @@
                 <div class="card mb-3">
                     <div class="row g-0">
                         <div class="col-md-4" style="width: 300px">
-                            <img src=@comment.UserImage class="img-fluid rounded-start" alt="Slika korisnika">
+                            <img style="border-radius: 20px; margin: 5px" src=@comment.UserImage class="img-fluid rounded-start" alt="Slika korisnika">
+                            <h6 style="margin-left: 5px">Email: @comment.UserEmail</h6>
                         </div>
                         <div style="min-width: 600px" class="col-md-8">
                             <div class="card-body">
 
                                 <!--Delete Comment Button-->
-                                @if(User.Identity.Name != "" && User.Identity.Name != null && User.Identity.Name == comment.UserEmail) { 
-                                <div id="removeThemeForm" style="float: right">
-                                    <form method="post" action="@Url.Action("RemoveComment", "Home")">
-                                        <input type="hidden" name="commentGuid" value="@comment.RowKey" />
-                                        <input type="hidden" id="userEmail" name="userEmail" value="@User.Identity.Name" />
-                                        <button type="submit" title="Remove comment" style=" border: none; background-color:white">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="red" class="bi bi-trash" viewBox="0 0 16 16">
-                                                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
-                                                <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
-                                            </svg>
-                                        </button>
-                                    </form>
-                                </div>
+                                @if (User.Identity.Name != "" && User.Identity.Name != null && User.Identity.Name == comment.UserEmail)
+                                {
+                                    <div id="removeThemeForm" style="float: right">
+                                        <form method="post" action="@Url.Action("RemoveComment", "Home")">
+                                            <input type="hidden" name="commentGuid" value="@comment.RowKey" />
+                                            <input type="hidden" id="userEmail" name="userEmail" value="@User.Identity.Name" />
+                                            <button type="submit" title="Remove comment" style=" border: none; background-color:white">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="red" class="bi bi-trash" viewBox="0 0 16 16">
+                                                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
+                                                    <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
+                                                </svg>
+                                            </button>
+                                        </form>
+                                    </div>
                                 }
                                 <h5 class="card-title">@comment.UserEmail</h5>
                                 <p class="card-text">@comment.Content</p>
@@ -168,7 +180,7 @@
                         </div>
                     </div>
                 </div>
-                
+
             }
         }
         else

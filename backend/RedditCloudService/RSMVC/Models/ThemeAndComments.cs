@@ -8,6 +8,7 @@ namespace RSMVC.Models
     public class ThemeAndComments
     {
         public Theme Theme { get; set; }
+        public string UserThumbnailUrl { get; set; }
         public List<Comment> Comments { get; set; } = new List<Comment>();
         public List<string> Upvoters { get; set; } = new List<string>();
         public List<string> Downvoters { get; set; } = new List<string>();
