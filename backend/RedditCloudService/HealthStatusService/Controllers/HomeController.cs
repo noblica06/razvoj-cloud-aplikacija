@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DataLibrary.HealthCheck;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,22 +9,18 @@ namespace HealthStatusService.Controllers
 {
     public class HomeController : Controller
     {
+        HealthCheckRepo healthCheckRepo = new HealthCheckRepo();
+
         public ActionResult Index()
         {
-            return View();
-        }
+            List<HealthCheck> lastHour = healthCheckRepo.RetrieveForLastHour().ToList();
+            ViewBag.LastHour = lastHour;
 
-        public ActionResult About()
-        {
-            ViewBag.Message = "Your application description page.";
+            List<HealthCheck> past24Hours = healthCheckRepo.RetrieveForPasth24Hours().ToList();
+            List<HealthCheck> okStatus24Hours = healthCheckRepo.RetrieveForPasth24Hours().Where(hc => hc.Status == "OK").ToList();
 
-            return View();
-        }
-
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
-
+            double upTimePercentage = (okStatus24Hours.Count * 1.0 / past24Hours.Count * 1.0) * 100;
+            ViewBag.UpTimePercetange = upTimePercentage;
             return View();
         }
     }
