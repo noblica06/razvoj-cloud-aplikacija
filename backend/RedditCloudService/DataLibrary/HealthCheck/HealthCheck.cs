@@ -11,6 +11,7 @@ namespace DataLibrary.HealthCheck
     {
         public string Status { get; set; }
         public string Guid { get; set; }
+        public string ServiceName { get; set; }
 
         public HealthCheck(string guid) { PartitionKey = "HealthCheck"; RowKey = guid; }
         public HealthCheck()

@@ -21,6 +21,9 @@ namespace HealthMonitoringService
         private readonly ManualResetEvent runCompleteEvent = new ManualResetEvent(false);
         HealthCheckRepo healthCheckRepo = new HealthCheckRepo();
 
+        private IHealthMonitoring redditProxy;
+        private IHealthMonitoring notificationProxy;
+
         public override void Run()
         {
             Trace.TraceInformation("HealthMonitoringService is running");
@@ -63,26 +66,26 @@ namespace HealthMonitoringService
             Trace.TraceInformation("HealthMonitoringService has stopped");
         }
 
-        private IHealthMonitoring redditProxy;
-
         public void ConnectToRedditService()
         {
-            /* // var endpoint = RoleEnvironment.Roles["RSMVC"].Instances[0].InstanceEndpoints["HealthMonitoring"];
-             // var address = new EndpointAddress($"net.tcp://{endpoint.IPEndpoint}/HealthStatusCheck");
-             var address = new EndpointAddress("net.tcp://localhost:8081/HealthStatusCheck");
-             //var address = new EndpointAddress("net.tcp://127.0.0.1:6000/Service");
-             var binding = new NetTcpBinding();
-
-             ChannelFactory<IHealthMonitoring> factory = new ChannelFactory<IHealthMonitoring>(binding, address);
-             redditProxy = factory.CreateChannel(); */
-
             var binding = new NetTcpBinding();
             ChannelFactory<IHealthMonitoring> factory = new
             ChannelFactory<IHealthMonitoring>(binding, new
             EndpointAddress("net.tcp://localhost:6000/HealthMonitoring"));
             redditProxy = factory.CreateChannel();
 
-            Trace.WriteLine("Proxy: " + redditProxy.ToString());
+            //Trace.WriteLine("Proxy: " + redditProxy.ToString());
+        }
+
+        public void ConnectToNotificationService()
+        {
+            var binding = new NetTcpBinding();
+            ChannelFactory<IHealthMonitoring> factory = new
+            ChannelFactory<IHealthMonitoring>(binding, new
+            EndpointAddress("net.tcp://localhost:6001/HealthMonitoring"));
+            notificationProxy = factory.CreateChannel();
+
+            //Trace.WriteLine("Proxy: " + redditProxy.ToString());
         }
 
         private async Task RunAsync(CancellationToken cancellationToken)
@@ -93,21 +96,37 @@ namespace HealthMonitoringService
                 try
                 {
                     if(redditProxy == null) ConnectToRedditService();
+                    if (notificationProxy == null) ConnectToNotificationService();
 
                     if (redditProxy.CheckStatus())
                     {
                         //upisi u tabelu OK
-                        Trace.TraceWarning("Service is working!");
+                        Trace.TraceWarning("RSMVC is WORKING!");
                         string guid = Guid.NewGuid().ToString();
-                        HealthCheck healthCheck = new HealthCheck(guid) { Status = "OK" };
+                        HealthCheck healthCheck = new HealthCheck(guid) { Status = "OK", ServiceName = "RSMVC" };
                         //healthCheckRepo.AddHealthCheck(healthCheck); //OTKOMENTARISI
                     }
                     else
                     {
                         //upisi u tabelu NotOK
-                        Trace.TraceWarning("Service is not working");
-                        HealthCheck healthCheck = new HealthCheck(new Guid().ToString()) { Status = "NOT_OK" };
+                        Trace.TraceWarning("RSMVC is NOT WORKING");
+                        HealthCheck healthCheck = new HealthCheck(new Guid().ToString()) { Status = "NOT_OK", ServiceName = "RSMVC" };
                         healthCheckRepo.AddHealthCheck(healthCheck);
+                    }
+
+                    if (notificationProxy.CheckStatus())
+                    {
+                        Trace.TraceWarning("Email notification service is WORKING");
+                        string guid = Guid.NewGuid().ToString();
+                        HealthCheck healthCheck = new HealthCheck(guid) { Status = "OK", ServiceName = "NotificationService" };
+                        healthCheckRepo.AddHealthCheck(healthCheck); //OTKOMENTARISI
+                    }
+                    else
+                    {
+                        Trace.TraceWarning("Email notification service is NOT WORKING");
+                        string guid = Guid.NewGuid().ToString();
+                        HealthCheck healthCheck = new HealthCheck(guid) { Status = "NOT_OK", ServiceName = "NotificationService" };
+                        //healthCheckRepo.AddHealthCheck(healthCheck); //OTKOMENTARISI
                     }
                 }
                 catch(Exception e)

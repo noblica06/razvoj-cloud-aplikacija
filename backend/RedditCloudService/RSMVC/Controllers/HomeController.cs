@@ -171,8 +171,8 @@ namespace RSMVC.Controllers
                 Theme entry = new Theme(newTheme.Title) { Title = newTheme.Title, UserEmail = newTheme.UserEmail, Description = newTheme.Description, CreatedDate = DateTime.Now, PhotoUrl = blob.Uri.ToString(), ThumbnailUrl = blob.Uri.ToString() };
                 repo.AddTheme(entry);
 
-                CloudQueue queue = QueueHelper.GetQueueReference("vezba");
-                queue.AddMessage(new CloudQueueMessage(newTheme.Title), null, TimeSpan.FromMilliseconds(30));
+                //CloudQueue queue = QueueHelper.GetQueueReference("vezba");
+                //queue.AddMessage(new CloudQueueMessage(newTheme.Title), null, TimeSpan.FromMilliseconds(30));
 
                 return RedirectToAction("Index");
             }
@@ -292,8 +292,8 @@ namespace RSMVC.Controllers
 
             repoComment.AddComment(comment);
 
-            CloudQueue queue = QueueHelper.GetQueueReference("vezba");
-            queue.AddMessage(new CloudQueueMessage(comment.Guid), null, TimeSpan.FromMilliseconds(30));
+            CloudQueue queue = QueueHelper.GetQueueReference("commentnotificationqueue");
+            queue.AddMessage(new CloudQueueMessage(guid), null, TimeSpan.FromMilliseconds(30));
 
             return RedirectToAction("Details", new { title = themeTitle });
         }

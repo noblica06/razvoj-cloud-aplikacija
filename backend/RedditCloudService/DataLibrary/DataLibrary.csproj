@@ -67,9 +67,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Comment\Comment.cs" />
+    <Compile Include="Comment\CommentDataRepo.cs" />
+    <Compile Include="QueueHelper\QueueHelper.cs" />
     <Compile Include="HealthCheck\HealthCheck.cs" />
     <Compile Include="HealthCheck\HealthCheckRepo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UserData\ThemeSubscribersDataRepo.cs" />
+    <Compile Include="UserData\UserData.cs" />
+    <Compile Include="UserData\UserDataRepo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
