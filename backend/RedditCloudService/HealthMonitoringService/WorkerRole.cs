@@ -21,8 +21,11 @@ namespace HealthMonitoringService
         private readonly ManualResetEvent runCompleteEvent = new ManualResetEvent(false);
         HealthCheckRepo healthCheckRepo = new HealthCheckRepo();
 
+        ServiceHost serviceHost;
+
         private IHealthMonitoring redditProxy;
         private IHealthMonitoring notificationProxy;
+        //private IRedditDown redditDownProxy;
 
         public override void Run()
         {
@@ -45,6 +48,14 @@ namespace HealthMonitoringService
 
             // For information on handling configuration changes
             // see the MSDN topic at https://go.microsoft.com/fwlink/?LinkId=166357.
+
+            serviceHost = new ServiceHost(typeof(AdminEmailService));
+            NetTcpBinding binding = new NetTcpBinding();
+            serviceHost.AddServiceEndpoint(typeof(ISendAdminEmails), binding, new
+            Uri("net.tcp://localhost:6003/AdminEmailService"));
+            serviceHost.Open();
+            Console.WriteLine("Server ready and waiting for requests.");
+            Console.WriteLine("Server ready and waiting for requests.");
 
             bool result = base.OnStart();
 
@@ -88,6 +99,17 @@ namespace HealthMonitoringService
             //Trace.WriteLine("Proxy: " + redditProxy.ToString());
         }
 
+  /*      public void ConnectToRedditDownNS()
+        {
+            var binding = new NetTcpBinding();
+            ChannelFactory<IRedditDown> factory = new
+            ChannelFactory<IRedditDown>(binding, new
+            EndpointAddress("net.tcp://localhost:6005/RedditDown"));
+            redditDownProxy = factory.CreateChannel();
+
+            //Trace.WriteLine("Proxy: " + redditProxy.ToString());
+        } */
+
         private async Task RunAsync(CancellationToken cancellationToken)
         {
             // TODO: Replace the following with your own logic.
@@ -97,6 +119,7 @@ namespace HealthMonitoringService
                 {
                     if(redditProxy == null) ConnectToRedditService();
                     if (notificationProxy == null) ConnectToNotificationService();
+                    //if (redditDownProxy == null) ConnectToRedditDownNS();
 
                     if (redditProxy.CheckStatus())
                     {
@@ -104,14 +127,18 @@ namespace HealthMonitoringService
                         Trace.TraceWarning("RSMVC is WORKING!");
                         string guid = Guid.NewGuid().ToString();
                         HealthCheck healthCheck = new HealthCheck(guid) { Status = "OK", ServiceName = "RSMVC" };
-                        //healthCheckRepo.AddHealthCheck(healthCheck); //OTKOMENTARISI
+                        healthCheckRepo.AddHealthCheck(healthCheck); //OTKOMENTARISI
                     }
                     else
                     {
                         //upisi u tabelu NotOK
                         Trace.TraceWarning("RSMVC is NOT WORKING");
-                        HealthCheck healthCheck = new HealthCheck(new Guid().ToString()) { Status = "NOT_OK", ServiceName = "RSMVC" };
+                        string guid = Guid.NewGuid().ToString();
+                        HealthCheck healthCheck = new HealthCheck(guid) { Status = "NOT_OK", ServiceName = "RSMVC" };
                         healthCheckRepo.AddHealthCheck(healthCheck);
+                        //posalji mejl notification servicu
+                        AdminEmailService.AddEmailsToQueue();
+
                     }
 
                     if (notificationProxy.CheckStatus())
@@ -126,7 +153,7 @@ namespace HealthMonitoringService
                         Trace.TraceWarning("Email notification service is NOT WORKING");
                         string guid = Guid.NewGuid().ToString();
                         HealthCheck healthCheck = new HealthCheck(guid) { Status = "NOT_OK", ServiceName = "NotificationService" };
-                        //healthCheckRepo.AddHealthCheck(healthCheck); //OTKOMENTARISI
+                        healthCheckRepo.AddHealthCheck(healthCheck); //OTKOMENTARISI
                     }
                 }
                 catch(Exception e)

@@ -59,8 +59,12 @@ namespace NotificationService
             serviceHost.AddServiceEndpoint(typeof(IHealthMonitoring), binding, new
             Uri("net.tcp://localhost:6001/HealthMonitoring"));
             serviceHost.Open();
-            Console.WriteLine("Server ready and waiting for requests.");
-            Console.WriteLine("Server ready and waiting for requests.");
+            Console.WriteLine("Server ready and waiting for requests."); //OVDE COMMENT
+
+            /*serviceHost.AddServiceEndpoint(typeof(IRedditDown), binding, new
+            Uri("net.tcp://localhost:6005/RedditDown"));
+            serviceHost.Open();
+            Console.WriteLine("Server ready and waiting for requests."); */
 
             bool result = base.OnStart();
 
@@ -84,7 +88,7 @@ namespace NotificationService
         private async Task ReadFromQueueAndSendMail()
         {
             CloudQueue queue = QueueHelper.GetQueueReference("commentnotificationqueue");
-           CloudQueueMessage message = await queue.GetMessageAsync();
+            CloudQueueMessage message = await queue.GetMessageAsync();
            
             if(message == null || message.AsString == "")
             {
@@ -92,16 +96,37 @@ namespace NotificationService
             }
             else if(message.DequeueCount == 1)
             {
-                queue.DeleteMessage(message);
                 string commentId = message.AsString;
+                queue.DeleteMessage(message);
                 Comment comment = commentDataRepo.GetComment(commentId);
                 string themeTitle = comment.ThemeTitle;
                 List<string> subscribersEmail = themeSubscriberRepo.RetrieveAllThemeSubscribers().Where(ts => ts.ThemeTitle == themeTitle).Select(ts => ts.UserEmail).ToList();
                 foreach (var email in subscribersEmail)
                 {
-                    await SendEmail(email, comment.Content);
-                    WriteCommentTraceToTable();
+                   // await SendEmail(email, comment.Content);
                 }
+
+                //WriteCommentTraceToTable(DateTime.Now, commentId, subscribersEmail.Count);
+            }
+        }
+
+        public async Task SendEmailsToAdmin()
+        {
+            CloudQueue queue = QueueHelper.GetQueueReference("adminnotificationqueue");
+            CloudQueueMessage message = await queue.GetMessageAsync();
+
+            if (message == null || message.AsString == "")
+            {
+                return;
+            }
+            else if (message.DequeueCount == 1)
+            {
+                string email = message.AsString;
+                queue.DeleteMessage(message);
+
+                await SendEmail(email, "Warning! Reddit Service is down!");
+
+                //WriteCommentTraceToTable(DateTime.Now, commentId, subscribersEmail.Count);
             }
         }
 
@@ -113,7 +138,7 @@ namespace NotificationService
             // Send an email asynchronously:
             var emailMessage = new PostmarkMessage()
             {
-                To = "radojicic.pr142.2020@uns.ac.rs",
+                To = email,
                 From = "radojicic.pr142.2020@uns.ac.rs",
                 TrackOpens = true,
                 Subject = "Reddit test",
@@ -152,6 +177,7 @@ namespace NotificationService
                 try
                 {
                     await ReadFromQueueAndSendMail();
+                    await SendEmailsToAdmin();
                 }
                 catch(Exception e)
                 {
