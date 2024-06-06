@@ -15,6 +15,8 @@ using DataLibrary.Comment;
 using DataLibrary.UserData;
 using Common;
 using System.ServiceModel;
+using PostmarkDotNet;
+using PostmarkDotNet.Model;
 
 namespace NotificationService
 {
@@ -27,6 +29,8 @@ namespace NotificationService
         ThemeSubscribersDataRepo themeSubscriberRepo = new ThemeSubscribersDataRepo();
 
         private ServiceHost serviceHost;
+
+        public object ConfigurationManager { get; private set; }
 
         public override void Run()
         {
@@ -80,27 +84,58 @@ namespace NotificationService
         private async Task ReadFromQueueAndSendMail()
         {
             CloudQueue queue = QueueHelper.GetQueueReference("commentnotificationqueue");
-            CloudQueueMessage message = await queue.GetMessageAsync();
-
-            string commentId = message.AsString;
-
-            Comment comment = commentDataRepo.GetComment(commentId);
-
-            string themeTitle = comment.ThemeTitle;
-
-            List<string> subscribersEmail = themeSubscriberRepo.RetrieveAllThemeSubscribers().Where(ts => ts.ThemeTitle == themeTitle).Select(ts => ts.UserEmail).ToList();
-
-            foreach(var email in subscribersEmail)
+           CloudQueueMessage message = await queue.GetMessageAsync();
+           
+            if(message == null || message.AsString == "")
             {
-                SendEmail(email, comment.Content);
-                WriteCommentTraceToTable();
+                return;
+            }
+            else if(message.DequeueCount == 1)
+            {
+                queue.DeleteMessage(message);
+                string commentId = message.AsString;
+                Comment comment = commentDataRepo.GetComment(commentId);
+                string themeTitle = comment.ThemeTitle;
+                List<string> subscribersEmail = themeSubscriberRepo.RetrieveAllThemeSubscribers().Where(ts => ts.ThemeTitle == themeTitle).Select(ts => ts.UserEmail).ToList();
+                foreach (var email in subscribersEmail)
+                {
+                    await SendEmail(email, comment.Content);
+                    WriteCommentTraceToTable();
+                }
             }
         }
 
-        private void SendEmail(string email, string content)
+        private async Task SendEmail(string email, string content)
         {
             Trace.TraceWarning($"Saljem Email na {email} sa sadrzajem {content}");
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
+            // Send an email asynchronously:
+            var emailMessage = new PostmarkMessage()
+            {
+                To = "radojicic.pr142.2020@uns.ac.rs",
+                From = "radojicic.pr142.2020@uns.ac.rs",
+                TrackOpens = true,
+                Subject = "Reddit test",
+                TextBody = $"{content}",
+                HtmlBody = "HTML goes here",
+                Tag = "New Year's Email Campaign",
+                Headers = new HeaderCollection
+                {
+                   new MailHeader() {Name="X-CUSTOM-HEADER", Value="Header content"},
+
+                }
+                //Headers = new HeaderCollection{
+                //{"X-CUSTOM-HEADER", "Header content"}
+                //}
+            };
+
+            string postmark_api_token = System.Configuration.ConfigurationManager.AppSettings["postmark_api"];
+            var client = new PostmarkClient("ee60dd27-9290-4176-8024-424e3ef77fd7");
+            var sendResult = await client.SendMessageAsync(emailMessage);
+
+            if (sendResult.Status == PostmarkStatus.Success) { /* Handle success */ }
+            else { /* Resolve issue.*/ }
 
         }
 
@@ -118,12 +153,12 @@ namespace NotificationService
                 {
                     await ReadFromQueueAndSendMail();
                 }
-                catch
+                catch(Exception e)
                 {
-
+                    Trace.TraceWarning(e.ToString());
                 }
                 Trace.TraceInformation("Working");
-                await Task.Delay(1000);
+                await Task.Delay(10000);
             }
         }
     }
