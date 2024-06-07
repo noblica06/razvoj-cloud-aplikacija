@@ -43,7 +43,7 @@ namespace RSMVC.DataRepo
             return results;
         }
         public void AddUserData(UserData newUserData)
-        { // Samostalni rad: izmestiti tableName u konfiguraciju servisa. 
+        { 
             TableOperation insertOperation = TableOperation.Insert(newUserData);
             _table.Execute(insertOperation);
         }

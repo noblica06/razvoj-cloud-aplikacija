@@ -28,7 +28,7 @@ namespace RSMVC.DataRepo
             return results;
         }
         public void AddTheme(Theme newTheme)
-        { // Samostalni rad: izmestiti tableName u konfiguraciju servisa. 
+        {
             TableOperation insertOperation = TableOperation.Insert(newTheme);
             _table.Execute(insertOperation);
         }

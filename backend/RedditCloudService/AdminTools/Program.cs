@@ -30,11 +30,18 @@ namespace AdminTools
                 {
                     Console.WriteLine("Unesite email za oporavak ili Exit za izlazak!");
                     string email = Console.ReadLine();
-                    if (email == "Exit") break;
+                    if (email == "Exit") return;
                     if (!email.Contains('@')) Console.WriteLine("Pogresan email, pokusajte ponovo");
                     else
                     {
-                        proxy.SendEmails(email);
+                        try
+                        {
+                            proxy.SendEmails(email);
+                        }
+                        catch(Exception e)
+                        {
+                            Console.WriteLine(e.InnerException.Message);
+                        }
                     } 
                 }
             }
@@ -45,10 +52,8 @@ namespace AdminTools
             var binding = new NetTcpBinding();
             ChannelFactory<ISendAdminEmails> factory = new
             ChannelFactory<ISendAdminEmails>(binding, new
-            EndpointAddress("net.tcp://localhost:6003/AdminEmailService"));
+            EndpointAddress("net.tcp://localhost:10100/AdminEmailService"));
             return factory.CreateChannel();
-
-            //Trace.WriteLine("Proxy: " + redditProxy.ToString());
         }
     }
 }

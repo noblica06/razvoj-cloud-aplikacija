@@ -28,7 +28,7 @@ namespace DataLibrary.NotificationData
             return results;
         }
         public void AddNotificationData(NotificationData notificationData)
-        { // Samostalni rad: izmestiti tableName u konfiguraciju servisa. 
+        {
             TableOperation insertOperation = TableOperation.Insert(notificationData);
             _table.Execute(insertOperation);
         }
@@ -43,7 +43,6 @@ namespace DataLibrary.NotificationData
             {
                 return null;
             }
-
         }
     }
 }

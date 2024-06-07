@@ -12,6 +12,7 @@ namespace DataLibrary.UserData
     {
         private CloudStorageAccount _storageAccount;
         private CloudTable _table;
+
         public UserDataRepo()
         {
             _storageAccount = CloudStorageAccount.Parse(CloudConfigurationManager.GetSetting("DataConnectionString"));
@@ -19,6 +20,7 @@ namespace DataLibrary.UserData
             _table = tableClient.GetTableReference("UserDataTable");
             _table.CreateIfNotExists();
         }
+
         public IQueryable<UserData> RetrieveAllUserDatas()
         {
             var results = from g in _table.CreateQuery<UserData>()
@@ -27,7 +29,7 @@ namespace DataLibrary.UserData
             return results;
         }
         public void AddUserData(UserData newUserData)
-        { // Samostalni rad: izmestiti tableName u konfiguraciju servisa. 
+        { 
             TableOperation insertOperation = TableOperation.Insert(newUserData);
             _table.Execute(insertOperation);
         }
@@ -58,7 +60,6 @@ namespace DataLibrary.UserData
             {
                 return null;
             }
-
         }
 
         public void UpdateUserData(UserData userData)

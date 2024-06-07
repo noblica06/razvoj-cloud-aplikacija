@@ -48,7 +48,6 @@ namespace RSMVC.Controllers
             get
             {
                 return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
-                //return  HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
             }
             private set
             {
@@ -93,8 +92,6 @@ namespace RSMVC.Controllers
             }
             userDataRepo.UpdateUserData(loggdinUser);
 
-            //var user = UserManager.FindByEmailAsync(registerViewModel.Email);
-
             var user = await UserManager.FindByNameAsync(updateViewModel.Email);
 
             user.Address = updateViewModel.Address;
@@ -107,13 +104,6 @@ namespace RSMVC.Controllers
             await UserManager.UpdateAsync(user);
 
             return View("Index");
-
-
-            //var user = _userManager.FindAsync()
-
-            //CloudQueue queue = QueueHelper.GetQueueReference("vezba");
-            //queue.AddMessage(new CloudQueueMessage(registerViewModel.Email), null, TimeSpan.FromMilliseconds(30));
-
         }
     }
 }

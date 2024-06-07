@@ -7,17 +7,11 @@ Project("{CC5FD16D-436D-48AD-A40C-5A424C6E3E79}") = "RedditCloudService", "Reddi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NotificationService", "NotificationService\NotificationService.csproj", "{BAA2128E-7F98-4107-BF05-B6EA1C3A1BCF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RedditService", "RedditService\RedditService.csproj", "{B22F6FAD-E33C-4467-BD5E-D64E7A350ACC}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HealthStatusService", "HealthStatusService\HealthStatusService.csproj", "{E04FBF02-5C3D-40CB-A538-42E6BC44ACE7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HealthMonitoringService", "HealthMonitoringService\HealthMonitoringService.csproj", "{18A03D56-BA14-4B70-9325-96D1AA21D124}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageConverter", "ImageConverter\ImageConverter.csproj", "{4863700F-6705-486B-ADE9-C990BA8FCCAC}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RSMVC", "RSMVC\RSMVC.csproj", "{FDEFB38D-D2A6-4456-9702-478B836AF459}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RedditService_Data", "RedditSrvice_Data\RedditService_Data.csproj", "{EB1C3BFF-E250-4D78-9C30-EBC542DC0BB8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csproj", "{F784999A-6F0A-4962-A38C-DAC9CFB729C0}"
 EndProject
@@ -39,10 +33,6 @@ Global
 		{BAA2128E-7F98-4107-BF05-B6EA1C3A1BCF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BAA2128E-7F98-4107-BF05-B6EA1C3A1BCF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BAA2128E-7F98-4107-BF05-B6EA1C3A1BCF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B22F6FAD-E33C-4467-BD5E-D64E7A350ACC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B22F6FAD-E33C-4467-BD5E-D64E7A350ACC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B22F6FAD-E33C-4467-BD5E-D64E7A350ACC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B22F6FAD-E33C-4467-BD5E-D64E7A350ACC}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E04FBF02-5C3D-40CB-A538-42E6BC44ACE7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E04FBF02-5C3D-40CB-A538-42E6BC44ACE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E04FBF02-5C3D-40CB-A538-42E6BC44ACE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -51,18 +41,10 @@ Global
 		{18A03D56-BA14-4B70-9325-96D1AA21D124}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{18A03D56-BA14-4B70-9325-96D1AA21D124}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{18A03D56-BA14-4B70-9325-96D1AA21D124}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4863700F-6705-486B-ADE9-C990BA8FCCAC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4863700F-6705-486B-ADE9-C990BA8FCCAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4863700F-6705-486B-ADE9-C990BA8FCCAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4863700F-6705-486B-ADE9-C990BA8FCCAC}.Release|Any CPU.Build.0 = Release|Any CPU
 		{FDEFB38D-D2A6-4456-9702-478B836AF459}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{FDEFB38D-D2A6-4456-9702-478B836AF459}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FDEFB38D-D2A6-4456-9702-478B836AF459}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FDEFB38D-D2A6-4456-9702-478B836AF459}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EB1C3BFF-E250-4D78-9C30-EBC542DC0BB8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EB1C3BFF-E250-4D78-9C30-EBC542DC0BB8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EB1C3BFF-E250-4D78-9C30-EBC542DC0BB8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EB1C3BFF-E250-4D78-9C30-EBC542DC0BB8}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F784999A-6F0A-4962-A38C-DAC9CFB729C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F784999A-6F0A-4962-A38C-DAC9CFB729C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F784999A-6F0A-4962-A38C-DAC9CFB729C0}.Release|Any CPU.ActiveCfg = Release|Any CPU

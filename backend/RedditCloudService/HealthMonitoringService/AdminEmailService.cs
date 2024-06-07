@@ -24,6 +24,7 @@ namespace HealthMonitoringService
                 CloudQueue queue = QueueHelper.GetQueueReference("adminnotificationqueue");
                 queue.AddMessage(new CloudQueueMessage(email), null, TimeSpan.FromMilliseconds(30));
             }
+            if (adminEmails.Count == 0) return;
             adminEmails.RemoveRange(0, adminEmails.Count - 1);
         }
     }

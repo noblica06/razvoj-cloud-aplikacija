@@ -28,7 +28,7 @@ namespace RSMVC.DataRepo
             return results;
         }
         public void AddComment(Comment newComment)
-        { // Samostalni rad: izmestiti tableName u konfiguraciju servisa. 
+        {
             TableOperation insertOperation = TableOperation.Insert(newComment);
             _table.Execute(insertOperation);
         }

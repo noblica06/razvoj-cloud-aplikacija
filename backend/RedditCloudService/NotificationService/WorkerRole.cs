@@ -56,10 +56,18 @@ namespace NotificationService
             // For information on handling configuration changes
             // see the MSDN topic at https://go.microsoft.com/fwlink/?LinkId=166357.
 
-            serviceHost = new ServiceHost(typeof(HealthStatusCheck));
+            /*serviceHost = new ServiceHost(typeof(HealthStatusCheck));
             NetTcpBinding binding = new NetTcpBinding();
             serviceHost.AddServiceEndpoint(typeof(IHealthMonitoring), binding, new
             Uri("net.tcp://localhost:6001/HealthMonitoring"));
+            serviceHost.Open();
+            Console.WriteLine("Server ready and waiting for requests."); */
+
+            var endpoint = RoleEnvironment.CurrentRoleInstance.InstanceEndpoints["InternalEndpoint"];
+            var endpointAddress = $"net.tcp://{endpoint.IPEndpoint}/HealthMonitoring";
+            ServiceHost serviceHost = new ServiceHost(typeof(HealthStatusCheck));
+            NetTcpBinding binding = new NetTcpBinding();
+            serviceHost.AddServiceEndpoint(typeof(IHealthMonitoring), binding, endpointAddress);
             serviceHost.Open();
             Console.WriteLine("Server ready and waiting for requests.");
 
@@ -137,7 +145,7 @@ namespace NotificationService
                 To = email,
                 From = "radojicic.pr142.2020@uns.ac.rs",
                 TrackOpens = true,
-                Subject = "Reddit test",
+                Subject = "Reddit",
                 TextBody = $"{content}",
                 HtmlBody = "HTML goes here",
                 Tag = "New Year's Email Campaign",
@@ -148,7 +156,7 @@ namespace NotificationService
                 }
             };
 
-            string postmark_api_token = System.Configuration.ConfigurationManager.AppSettings["postmark_api"];
+            //string postmark_api_token = System.Configuration.ConfigurationManager.AppSettings["postmark_api"];
             var client = new PostmarkClient("ee60dd27-9290-4176-8024-424e3ef77fd7");
             var sendResult = await client.SendMessageAsync(emailMessage);
 

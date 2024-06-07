@@ -49,7 +49,6 @@ namespace RSMVC.Controllers
             get
             {
                 return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
-                //return  HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
             }
             private set
             {

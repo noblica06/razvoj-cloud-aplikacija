@@ -5,14 +5,8 @@
       <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" />
       <Setting name="DataConnectionString" />
     </ConfigurationSettings>
-  </WorkerRole>
-  <WorkerRole name="RedditService" vmsize="Standard_D1_v2">
-    <ConfigurationSettings>
-      <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" />
-      <Setting name="DataConnectionString" />
-    </ConfigurationSettings>
     <Endpoints>
-      <InputEndpoint name="TestEndpoint" protocol="http" port="10100" localPort="10101" />
+      <InternalEndpoint name="InternalEndpoint" protocol="tcp" />
     </Endpoints>
   </WorkerRole>
   <WebRole name="HealthStatusService" vmsize="Standard_D1_v2">
@@ -36,12 +30,9 @@
       <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" />
       <Setting name="DataConnectionString" />
     </ConfigurationSettings>
-  </WorkerRole>
-  <WorkerRole name="ImageConverter" vmsize="Standard_D1_v2">
-    <ConfigurationSettings>
-      <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" />
-      <Setting name="DataConnectionString" />
-    </ConfigurationSettings>
+    <Endpoints>
+      <InputEndpoint name="HMEndpoint" protocol="tcp" port="10100" />
+    </Endpoints>
   </WorkerRole>
   <WebRole name="RSMVC" vmsize="Standard_D1_v2">
     <Sites>
@@ -58,6 +49,7 @@
     <Endpoints>
       <InputEndpoint name="Endpoint1" protocol="http" port="8080" />
       <InputEndpoint name="HealthMonitoring" protocol="tcp" port="8081" />
+      <InternalEndpoint name="InternalEndpoint" protocol="tcp" />
     </Endpoints>
   </WebRole>
 </ServiceDefinition>

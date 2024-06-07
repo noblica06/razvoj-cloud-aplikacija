@@ -39,7 +39,7 @@ namespace RSMVC.DataRepo
             return results;
         }
         public void AddThemeVote(ThemeVoters themeVoters)
-        { // Samostalni rad: izmestiti tableName u konfiguraciju servisa. 
+        { 
             TableOperation insertOperation = TableOperation.Insert(themeVoters);
             _table.Execute(insertOperation);
         }

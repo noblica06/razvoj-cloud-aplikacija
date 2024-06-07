@@ -8,11 +8,6 @@ namespace RSMVC.DTOs
 {
     public class LoginResponseDTO
     {
-        //public string Token { get; set; } later
-
         public string Email { get; set; }
-
-        //public string Image { get; set; } comment
-
     }
 }

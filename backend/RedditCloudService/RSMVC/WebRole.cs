@@ -17,19 +17,19 @@ namespace RSMVC
         {
             // For information on handling configuration changes
             // see the MSDN topic at https://go.microsoft.com/fwlink/?LinkId=166357.
-            /*string baseAddress = $"net.tcp://{RoleEnvironment.CurrentRoleInstance.InstanceEndpoints["HealthMonitoring"].IPEndpoint}/";
-            serviceHost = new ServiceHost(typeof(HealthStatusCheck), new Uri(baseAddress));
-
-            serviceHost.AddServiceEndpoint(typeof(IHealthMonitoring), new NetTcpBinding(), baseAddress);
-
-            serviceHost.Open(); */
-
-            serviceHost = new ServiceHost(typeof(HealthStatusCheck));
+            /*serviceHost = new ServiceHost(typeof(HealthStatusCheck));
             NetTcpBinding binding = new NetTcpBinding();
             serviceHost.AddServiceEndpoint(typeof(IHealthMonitoring), binding, new
             Uri("net.tcp://localhost:6000/HealthMonitoring"));
             serviceHost.Open();
-            Console.WriteLine("Server ready and waiting for requests.");
+            Console.WriteLine("Server ready and waiting for requests."); */
+
+            var endpoint = RoleEnvironment.CurrentRoleInstance.InstanceEndpoints["InternalEndpoint"];
+            var endpointAddress = $"net.tcp://{endpoint.IPEndpoint}/HealthMonitoring";
+            ServiceHost serviceHost = new ServiceHost(typeof(HealthStatusCheck));
+            NetTcpBinding binding = new NetTcpBinding();
+            serviceHost.AddServiceEndpoint(typeof(IHealthMonitoring), binding, endpointAddress);
+            serviceHost.Open();
             Console.WriteLine("Server ready and waiting for requests.");
 
             return base.OnStart();

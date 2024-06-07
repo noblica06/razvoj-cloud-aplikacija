@@ -150,8 +150,7 @@ namespace RSMVC.Controllers
         public ActionResult CreateTheme(CreateThemeViewModel newTheme)
         {
             try
-            {
-                //Theme theme = new Theme() { Title = newTheme.Title, UserEmail = newTheme.UserEmail, Description = newTheme.Description, CreatedDate = DateTime.Now, }
+            { 
                 if (repo.Exists(newTheme.Title))
                 {
                     return View("Error");
@@ -170,9 +169,6 @@ namespace RSMVC.Controllers
                 // upis studenta u table storage koristeci StudentDataRepository klasu
                 Theme entry = new Theme(newTheme.Title) { Title = newTheme.Title, UserEmail = newTheme.UserEmail, Description = newTheme.Description, CreatedDate = DateTime.Now, PhotoUrl = blob.Uri.ToString(), ThumbnailUrl = blob.Uri.ToString() };
                 repo.AddTheme(entry);
-
-                //CloudQueue queue = QueueHelper.GetQueueReference("vezba");
-                //queue.AddMessage(new CloudQueueMessage(newTheme.Title), null, TimeSpan.FromMilliseconds(30));
 
                 return RedirectToAction("Index");
             }
@@ -213,9 +209,6 @@ namespace RSMVC.Controllers
                     }
                 }
             }
-            
-            //CloudQueue queue = QueueHelper.GetQueueReference("vezba");
-            //queue.AddMessage(new CloudQueueMessage(comment.Guid), null, TimeSpan.FromMilliseconds(30));
 
             return RedirectToAction("Index");
         }
@@ -230,8 +223,6 @@ namespace RSMVC.Controllers
                 repoComment.RemoveComment(commentGuid);
                
             }
-            //CloudQueue queue = QueueHelper.GetQueueReference("vezba");
-            //queue.AddMessage(new CloudQueueMessage(comment.Guid), null, TimeSpan.FromMilliseconds(30));
             return RedirectToAction("Details", new { title = themeTitle });
         }
 
@@ -329,9 +320,6 @@ namespace RSMVC.Controllers
             theme.UpVotes += 1;
             repo.UpdateTheme(theme);
 
-            //CloudQueue queue = QueueHelper.GetQueueReference("vezba");
-            //queue.AddMessage(new CloudQueueMessage(comment.Guid), null, TimeSpan.FromMilliseconds(30));
-
             return RedirectToAction("Details", new { title = themeTitle });
         }
         [Authorize]
@@ -353,9 +341,6 @@ namespace RSMVC.Controllers
                 theme.UpVotes -= 1;
                 repo.UpdateTheme(theme);
             }
-
-            //CloudQueue queue = QueueHelper.GetQueueReference("vezba");
-            //queue.AddMessage(new CloudQueueMessage(comment.Guid), null, TimeSpan.FromMilliseconds(30));
 
             return RedirectToAction("Details", new { title = themeTitle });
         }
@@ -391,9 +376,6 @@ namespace RSMVC.Controllers
             theme.DownVotes += 1;
             repo.UpdateTheme(theme);
 
-            //CloudQueue queue = QueueHelper.GetQueueReference("vezba");
-            //queue.AddMessage(new CloudQueueMessage(comment.Guid), null, TimeSpan.FromMilliseconds(30));
-
             return RedirectToAction("Details", new { title = themeTitle });
         }
         [Authorize]
@@ -415,9 +397,6 @@ namespace RSMVC.Controllers
                 theme.DownVotes -= 1;
                 repo.UpdateTheme(theme);
             }
-
-            //CloudQueue queue = QueueHelper.GetQueueReference("vezba");
-            //queue.AddMessage(new CloudQueueMessage(comment.Guid), null, TimeSpan.FromMilliseconds(30));
 
             return RedirectToAction("Details", new { title = themeTitle });
         }
@@ -441,8 +420,6 @@ namespace RSMVC.Controllers
                 };
                 repoThemeSubscribers.AddThemeSubscriber(themeSubscriber);
             }
-            //CloudQueue queue = QueueHelper.GetQueueReference("vezba");
-            //queue.AddMessage(new CloudQueueMessage(comment.Guid), null, TimeSpan.FromMilliseconds(30));
 
             return RedirectToAction("Details", new { title = themeTitle });
         }
@@ -461,11 +438,7 @@ namespace RSMVC.Controllers
                 repoThemeSubscribers.RemoveThemeSubscriber(titleEmail);
             }
 
-            //CloudQueue queue = QueueHelper.GetQueueReference("vezba");
-            //queue.AddMessage(new CloudQueueMessage(comment.Guid), null, TimeSpan.FromMilliseconds(30));
-
             return RedirectToAction("Details", new { title = themeTitle });
         }
-
     }
 }

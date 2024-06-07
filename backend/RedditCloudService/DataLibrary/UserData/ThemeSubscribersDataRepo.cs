@@ -36,7 +36,7 @@ namespace DataLibrary.UserData
             return results;
         }
         public void AddThemeSubscriber(ThemeSubscriber themeSubscriber)
-        { // Samostalni rad: izmestiti tableName u konfiguraciju servisa. 
+        { 
             TableOperation insertOperation = TableOperation.Insert(themeSubscriber);
             _table.Execute(insertOperation);
         }
@@ -67,7 +67,6 @@ namespace DataLibrary.UserData
             {
                 return null;
             }
-
         }
 
         public void UpdateThemeSubscriber(ThemeSubscriber themeSubscriber)

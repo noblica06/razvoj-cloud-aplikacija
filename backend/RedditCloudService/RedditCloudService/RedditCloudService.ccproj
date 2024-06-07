@@ -12,7 +12,7 @@
     <AssemblyName>RedditCloudService</AssemblyName>
     <StartDevelopmentStorage>True</StartDevelopmentStorage>
     <Name>RedditCloudService</Name>
-    <UseWebProjectPorts>True</UseWebProjectPorts>
+    <UseWebProjectPorts>False</UseWebProjectPorts>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -54,28 +54,12 @@
       <RoleName>HealthStatusService</RoleName>
       <UpdateDiagnosticsConnectionStringOnPublish>True</UpdateDiagnosticsConnectionStringOnPublish>
     </ProjectReference>
-    <ProjectReference Include="..\ImageConverter\ImageConverter.csproj">
-      <Name>ImageConverter</Name>
-      <Project>{4863700f-6705-486b-ade9-c990ba8fccac}</Project>
-      <Private>True</Private>
-      <RoleType>Worker</RoleType>
-      <RoleName>ImageConverter</RoleName>
-      <UpdateDiagnosticsConnectionStringOnPublish>True</UpdateDiagnosticsConnectionStringOnPublish>
-    </ProjectReference>
     <ProjectReference Include="..\NotificationService\NotificationService.csproj">
       <Name>NotificationService</Name>
       <Project>{baa2128e-7f98-4107-bf05-b6ea1c3a1bcf}</Project>
       <Private>True</Private>
       <RoleType>Worker</RoleType>
       <RoleName>NotificationService</RoleName>
-      <UpdateDiagnosticsConnectionStringOnPublish>True</UpdateDiagnosticsConnectionStringOnPublish>
-    </ProjectReference>
-    <ProjectReference Include="..\RedditService\RedditService.csproj">
-      <Name>RedditService</Name>
-      <Project>{b22f6fad-e33c-4467-bd5e-d64e7a350acc}</Project>
-      <Private>True</Private>
-      <RoleType>Worker</RoleType>
-      <RoleName>RedditService</RoleName>
       <UpdateDiagnosticsConnectionStringOnPublish>True</UpdateDiagnosticsConnectionStringOnPublish>
     </ProjectReference>
     <ProjectReference Include="..\RSMVC\RSMVC.csproj">
@@ -90,20 +74,14 @@
   <ItemGroup>
     <Folder Include="HealthMonitoringServiceContent\" />
     <Folder Include="HealthStatusServiceContent\" />
-    <Folder Include="ImageConverterContent" />
     <Folder Include="NotificationServiceContent\" />
-    <Folder Include="RedditServiceContent\" />
     <Folder Include="RSMVCContent\" />
-    <Folder Include="RS_DataContent\" />
   </ItemGroup>
   <ItemGroup>
     <DiagnosticsConfiguration Include="HealthMonitoringServiceContent\diagnostics.wadcfgx" />
     <DiagnosticsConfiguration Include="HealthStatusServiceContent\diagnostics.wadcfgx" />
-    <DiagnosticsConfiguration Include="ImageConverterContent\diagnostics.wadcfgx" />
     <DiagnosticsConfiguration Include="NotificationServiceContent\diagnostics.wadcfgx" />
-    <DiagnosticsConfiguration Include="RedditServiceContent\diagnostics.wadcfgx" />
     <DiagnosticsConfiguration Include="RSMVCContent\diagnostics.wadcfgx" />
-    <DiagnosticsConfiguration Include="RS_DataContent\diagnostics.wadcfgx" />
   </ItemGroup>
   <!-- Import the target files for this project template -->
   <PropertyGroup>

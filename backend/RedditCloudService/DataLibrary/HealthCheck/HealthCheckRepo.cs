@@ -44,7 +44,7 @@ namespace DataLibrary.HealthCheck
             return ret;
         }
         public void AddHealthCheck(HealthCheck newHealthCheck)
-        { // Samostalni rad: izmestiti tableName u konfiguraciju servisa. 
+        { 
             TableOperation insertOperation = TableOperation.Insert(newHealthCheck);
             _table.Execute(insertOperation);
         }
