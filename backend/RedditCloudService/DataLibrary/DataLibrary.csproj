@@ -69,6 +69,8 @@
   <ItemGroup>
     <Compile Include="Comment\Comment.cs" />
     <Compile Include="Comment\CommentDataRepo.cs" />
+    <Compile Include="NotificationData\NotificationData.cs" />
+    <Compile Include="NotificationData\NotificationDataRepo.cs" />
     <Compile Include="QueueHelper\QueueHelper.cs" />
     <Compile Include="HealthCheck\HealthCheck.cs" />
     <Compile Include="HealthCheck\HealthCheckRepo.cs" />

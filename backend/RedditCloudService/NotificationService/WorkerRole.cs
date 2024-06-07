@@ -17,6 +17,7 @@ using Common;
 using System.ServiceModel;
 using PostmarkDotNet;
 using PostmarkDotNet.Model;
+using DataLibrary.NotificationData;
 
 namespace NotificationService
 {
@@ -27,6 +28,7 @@ namespace NotificationService
 
         CommentDataRepo commentDataRepo = new CommentDataRepo();
         ThemeSubscribersDataRepo themeSubscriberRepo = new ThemeSubscribersDataRepo();
+        NotificationDataRepo NotificationDataRepo = new NotificationDataRepo();
 
         private ServiceHost serviceHost;
 
@@ -59,12 +61,7 @@ namespace NotificationService
             serviceHost.AddServiceEndpoint(typeof(IHealthMonitoring), binding, new
             Uri("net.tcp://localhost:6001/HealthMonitoring"));
             serviceHost.Open();
-            Console.WriteLine("Server ready and waiting for requests."); //OVDE COMMENT
-
-            /*serviceHost.AddServiceEndpoint(typeof(IRedditDown), binding, new
-            Uri("net.tcp://localhost:6005/RedditDown"));
-            serviceHost.Open();
-            Console.WriteLine("Server ready and waiting for requests."); */
+            Console.WriteLine("Server ready and waiting for requests.");
 
             bool result = base.OnStart();
 
@@ -89,7 +86,7 @@ namespace NotificationService
         {
             CloudQueue queue = QueueHelper.GetQueueReference("commentnotificationqueue");
             CloudQueueMessage message = await queue.GetMessageAsync();
-           
+            int emailsSend = 0;
             if(message == null || message.AsString == "")
             {
                 return;
@@ -103,10 +100,10 @@ namespace NotificationService
                 List<string> subscribersEmail = themeSubscriberRepo.RetrieveAllThemeSubscribers().Where(ts => ts.ThemeTitle == themeTitle).Select(ts => ts.UserEmail).ToList();
                 foreach (var email in subscribersEmail)
                 {
-                   // await SendEmail(email, comment.Content);
+                   emailsSend += await SendEmail(email, comment.Content);
                 }
 
-                //WriteCommentTraceToTable(DateTime.Now, commentId, subscribersEmail.Count);
+                WriteCommentTraceToTable(commentId, emailsSend);
             }
         }
 
@@ -125,13 +122,12 @@ namespace NotificationService
                 queue.DeleteMessage(message);
 
                 await SendEmail(email, "Warning! Reddit Service is down!");
-
-                //WriteCommentTraceToTable(DateTime.Now, commentId, subscribersEmail.Count);
             }
         }
 
-        private async Task SendEmail(string email, string content)
+        private async Task<int> SendEmail(string email, string content)
         {
+            int counter = 0;
             Trace.TraceWarning($"Saljem Email na {email} sa sadrzajem {content}");
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
@@ -150,23 +146,24 @@ namespace NotificationService
                    new MailHeader() {Name="X-CUSTOM-HEADER", Value="Header content"},
 
                 }
-                //Headers = new HeaderCollection{
-                //{"X-CUSTOM-HEADER", "Header content"}
-                //}
             };
 
             string postmark_api_token = System.Configuration.ConfigurationManager.AppSettings["postmark_api"];
             var client = new PostmarkClient("ee60dd27-9290-4176-8024-424e3ef77fd7");
             var sendResult = await client.SendMessageAsync(emailMessage);
 
-            if (sendResult.Status == PostmarkStatus.Success) { /* Handle success */ }
+            if (sendResult.Status == PostmarkStatus.Success) { counter = 1; }
             else { /* Resolve issue.*/ }
+
+            return counter;
 
         }
 
-        private void WriteCommentTraceToTable()
+        private void WriteCommentTraceToTable(string commentId, int emailCounter)
         {
-
+            string guid = Guid.NewGuid().ToString();
+            NotificationData notificationData = new NotificationData(guid) { CommentId = commentId, EmailCounter = emailCounter};
+            NotificationDataRepo.AddNotificationData(notificationData);
         }
 
         private async Task RunAsync(CancellationToken cancellationToken)
